@@ -1,4 +1,6 @@
-use std::io;
+use std::{io, iter::Product};
+use std::io::Write;
+use std::fs::OpenOptions;
 
 fn main() {
     let result: f64;
@@ -52,7 +54,11 @@ fn main() {
     }
 
     println!("The result is: {}", result);
-}
+
+    log(x, op, y, result);
+
+     
+    }
 
 fn input_parser() -> f64 {
     let mut x: String = String::new();
@@ -65,4 +71,16 @@ fn input_parser() -> f64 {
     };
 
     return x;
+
+    
+
+}
+fn log(x: f64, op: i32, y: f64, result: f64) {
+    let log_entry = format!("{} {} {} = {}\n", x, op, y, result);
+    let mut hist_file = OpenOptions::new()
+        .append(true)
+        .create(true)
+        .open("calculator.log")
+        .expect("Cannot open file");
+    hist_file.write_all(log_entry.as_bytes()).expect("Cannot write to file");
 }
