@@ -1,71 +1,68 @@
-mod calculator;
-use std::env;
+use std::io;
 
 fn main() {
-    let calculator = calculator; 
+    let result: f64;
 
-    let args: Vec<String> = env::args().collect();
+    println!("Enter the first number: ");
+    let x: f64 = input_parser();
 
-    let operand1 = args[1].parse::<f64>().unwrap();
-    let operand2 = args[3].parse::<f64>().unwrap();
-    let operator = &(*args[2]);
+    if f64::is_nan(x) {
+        println!("Invalid input!");
+        return;
+    }
 
-    match operator{
-        "+" =>{
-            println!("{}" ,calculator.add(&operand1,&operand2));
-        }
+    println!("Enter the second number: ");
+    let y: f64 = input_parser();
 
-        "-" =>{
-            println!("{}" ,calculator.subtract(&operand1,&operand2));
-        }
+    if f64::is_nan(y) {
+        println!("Invalid input!");
+        return;
+    }
 
-        "/" =>{
-            println!("{}" ,calculator.divide(&operand1,&operand2));
-        }
-       
-        "*" =>{
-            println!("{}" ,calculator.multiply(&operand1,&operand2));
-        }
+    println!("List of operators:");
+    println!("(1) Add");
+    println!("(2) Subtract");
+    println!("(3) Multiply");
+    println!("(4) Divide");
+    println!("(5) Modulo");
+    println!("(6) Exponetial");
+    println!("Select the number associated with the desired operation: ");
 
-        "%" =>{
-            println!("{}" ,calculator.modulus(&operand1,&operand2));
-        }
+    let op: f64 = input_parser();
 
-        "powf" =>{
-            println!("{}" ,calculator.power(&operand1,&operand2));
-        }
+    if f64::is_nan(op) {
+        println!("Invalid input!");
+        return;
+    }
 
-        "!" =>{
-            println!("{}" ,calculator.factorial(&operand1,&operand2));
-        }
+    let op: i32 = op as i32;
 
-
-
-        "_" => {
-            println!("enter + / * ^ % ! -")
+    match op {
+        1 => result = x + y,
+        2 => result = x - y,
+        3 => result = x * y,
+        4 => result = x / y,
+        5 => result = x % y,
+        6 => result = x.powf(y),
+    
+        _ => {
+            println!("Invalid selection");
+            return;
         }
     }
+
+    println!("The result is: {}", result);
 }
 
+fn input_parser() -> f64 {
+    let mut x: String = String::new();
+    io::stdin().read_line(&mut x).expect("Invalid Input");
+    let x: f64 = match x.trim().parse() {
+        Ok(num) => num,
+        Err(_) => {
+            return f64::NAN;
+        }
+    };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return x;
+}
